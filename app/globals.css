@@ -1,26 +1,40 @@
 @import "tailwindcss";
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020813;
+  --foreground: #f1f5f9;
+  --font-display: 'Cabinet Grotesk', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-body);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* Display headings use Cabinet Grotesk */
+h1, h2, h3 {
+  font-family: var(--font-display);
+}
+
+/* GPU-accelerated layers */
+.will-change-opacity {
+  will-change: opacity;
+}
+.will-change-transform {
+  will-change: transform;
 }
