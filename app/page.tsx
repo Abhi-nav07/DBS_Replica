@@ -48,14 +48,19 @@ interface ClientInquiry {
 // ─────────────────────────────────────────────────────────────
 const OFFICES = [
   {
-    tab: "Head Office",
-    city: "Dehradun",
-    address: "Rajpur Road, Dehradun, Uttarakhand 248001, India",
-    phone: "+91-9821199832",
-    email: "info@digitalbyte.in",
-    googleMapsUrl: "https://maps.google.com/?q=Rajpur+Road+Dehradun+Uttarakhand",
-    embedUrl: "https://maps.google.com/maps?q=Rajpur+Road,+Dehradun,+Uttarakhand&output=embed",
-  },
+  tab: "Head Office",
+  city: "Dehradun",
+  address:
+    "Neelam Paradise, 2nd Floor, Opposite Pind Baluchi Restaurant, GMS Road, Dehradun, Uttarakhand, India",
+  phone: "+91-9821199832",
+  email: "info@digitalbyte.in",
+
+  googleMapsUrl:
+    "https://maps.google.com/?q=Neelam+Paradise+2nd+Floor+Opposite+Pind+Baluchi+Restaurant+GMS+Road+Dehradun",
+
+  embedUrl:
+    "https://maps.google.com/maps?q=Neelam+Paradise+2nd+Floor+Opposite+Pind+Baluchi+Restaurant+GMS+Road+Dehradun&output=embed",
+},,
   {
     tab: "Branch Office",
     city: "Pune",
