@@ -133,9 +133,15 @@ export default function HomePage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeOffice, setActiveOffice] = useState(0);
+
+  // Formspree endpoint — every form submission is automatically saved to
+  // your Formspree dashboard and emailed to you the moment it's sent.
+  const FORMSPREE_ENDPOINT = "https://formspree.io/f/xgobblnv";
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const heroHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -224,8 +230,11 @@ export default function HomePage() {
     return () => ctx?.revert();
   }, [mounted]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
+    setIsSubmitting(true);
+
     const inquiry: ClientInquiry = {
       id: Date.now(),
       name: formData.name,
@@ -236,6 +245,8 @@ export default function HomePage() {
       status: "New",
       phone: formData.phone,
     };
+
+    // 1) Keep existing dashboard sync intact — localStorage write unchanged
     try {
       const existing = localStorage.getItem("dbs_leads");
       const leads: ClientInquiry[] = existing ? JSON.parse(existing) : [];
@@ -244,6 +255,46 @@ export default function HomePage() {
     } catch (err) {
       console.error("Storage error:", err);
     }
+
+    // 2) Forward the same lead to Formspree — but never let a slow or
+    //    blocked network (e.g. restrictive WiFi/office firewalls) hang
+    //    the UI. A hard 6-second timeout guarantees the user always sees
+    //    a result instead of the page appearing to do nothing.
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: inquiry.name,
+          email: inquiry.email,
+          company: inquiry.company,
+          phone: inquiry.phone || "",
+          message: inquiry.details,
+          status: inquiry.status,
+          date: inquiry.date,
+        }),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error("Formspree responded with status " + response.status);
+      }
+    } catch (err) {
+      console.error("Formspree sync error:", err);
+      setSubmitError(
+        "Saved locally, but we couldn't reach the lead server. We'll still see your message in our dashboard."
+      );
+    }
+
+    setIsSubmitting(false);
     setSubmitted(true);
     setFormData({ name: "", company: "", email: "", phone: "", message: "" });
     setTimeout(() => setSubmitted(false), 4000);
@@ -824,12 +875,20 @@ style={{
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 transition-colors resize-none"
                       />
                     </div>
+                    {submitError && (
+                      <p className="text-amber-400 text-xs mb-4 -mt-2">
+                        {submitError}
+                      </p>
+                    )}
                     <button
                       type="submit"
-                      className="group w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 rounded-xl text-base transition-all flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="group w-full bg-sky-600 hover:bg-sky-500 disabled:bg-sky-700 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl text-base transition-all flex items-center justify-center gap-2"
                     >
-                      Send Message
-                      <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      {isSubmitting ? "Sending..." : "Send Message"}
+                      {!isSubmitting && (
+                        <ArrowUpRight size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      )}
                     </button>
                   </motion.form>
                 )}
