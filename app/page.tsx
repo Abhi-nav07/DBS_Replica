@@ -60,7 +60,7 @@ const OFFICES = [
 
   embedUrl:
     "https://maps.google.com/maps?q=Neelam+Paradise+2nd+Floor+Opposite+Pind+Baluchi+Restaurant+GMS+Road+Dehradun&output=embed",
-},,
+},
   {
     tab: "Branch Office",
     city: "Pune",
