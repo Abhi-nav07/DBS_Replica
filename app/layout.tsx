@@ -28,7 +28,16 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#020813]">{children}</body>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,700,500&f[]=plus-jakarta-sans@400,500,600&display=swap"
+        />
+      </head>
+
+      <body className="min-h-full flex flex-col bg-[#020813]">
+        {children}
+      </body>
     </html>
   );
 }
