@@ -138,6 +138,7 @@ export default function HomePage() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeOffice, setActiveOffice] = useState(0);
+  const [showContactPopup, setShowContactPopup] = useState(false);
 
   // Formspree endpoint — every form submission is automatically saved to
   // your Formspree dashboard and emailed to you the moment it's sent.
@@ -447,12 +448,12 @@ export default function HomePage() {
               <Link href="/dashboard" className="text-slate-300 hover:text-white text-sm transition-colors hidden sm:block">
                 Client Portal
               </Link>
-              <a
-                href="#contact"
-                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-all"
-              >
-                Contact Us
-              </a>
+<button
+  onClick={() => setShowContactPopup(true)}
+  className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full transition-all"
+>
+  Contact Us
+</button>
             </div>
           </div>
         </nav>
@@ -1112,7 +1113,54 @@ style={{
     </span>
   </div>
 </div>
+        <AnimatePresence>
+  {showContactPopup && (
+    <>
+      <div
+        onClick={() => setShowContactPopup(false)}
+        className="fixed inset-0 bg-black/60 z-[100]"
+      />
 
+      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[101]">
+        <div
+          className="rounded-3xl p-8 text-center w-[350px]"
+          style={{
+            background: "rgba(10,18,35,0.95)",
+            backdropFilter: "blur(20px)",
+            border: "1px solid rgba(6,182,212,0.25)",
+          }}
+        >
+          <Phone
+            size={40}
+            className="text-sky-400 mx-auto mb-4"
+          />
+
+          <h3 className="text-white text-xl font-bold mb-2">
+            Call Digital Byte Solutions
+          </h3>
+
+          <p className="text-slate-400 mb-5">
+            Speak directly with our team
+          </p>
+
+          <a
+            href="tel:+919821199832"
+            className="block bg-sky-600 hover:bg-sky-500 text-white font-bold py-4 rounded-xl"
+          >
+            +91 98211 99832
+          </a>
+
+          <button
+            onClick={() => setShowContactPopup(false)}
+            className="mt-4 text-slate-400"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </>
+  )}
+</AnimatePresence>
         {/* ── BOTTOM CALL RIBBON ── */}
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-[#1aa394] py-3 flex items-center justify-center gap-3">
           <Phone size={16} className="text-white" />
