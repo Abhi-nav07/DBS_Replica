@@ -47,7 +47,7 @@ interface ClientInquiry {
 //   3. Use the same URL + &output=embed  →  paste into embedUrl
 // ─────────────────────────────────────────────────────────────
 const OFFICES = [
-  {
+{
   tab: "Head Office",
   city: "Dehradun",
   address:
@@ -56,10 +56,10 @@ const OFFICES = [
   email: "info@digitalbyte.in",
 
   googleMapsUrl:
-    "https://maps.google.com/?q=Neelam+Paradise+2nd+Floor+Opposite+Pind+Baluchi+Restaurant+GMS+Road+Dehradun",
+    "https://www.google.com/maps?q=30.30636,78.01044",
 
   embedUrl:
-    "https://maps.google.com/maps?q=Neelam+Paradise+2nd+Floor+Opposite+Pind+Baluchi+Restaurant+GMS+Road+Dehradun&output=embed",
+    "https://maps.google.com/maps?q=30.30636,78.01044&z=17&output=embed",
 },
   {
     tab: "Branch Office",
